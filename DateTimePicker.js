@@ -84,9 +84,12 @@ export default class DateTimePicker extends Component {
     constructor(props) {
         super(props);
 
-        const currentDate = typeof props.date === 'string'
-            ? this.parseStringDate(props.date)
-            : null;
+        let currentDate = null;
+        if (props.date) {
+            currentDate = typeof props.date === 'string'
+                ? this.parseStringDate(props.date)
+                : props.date;
+        }
 
         this.state = {
             date: currentDate,
@@ -100,7 +103,7 @@ export default class DateTimePicker extends Component {
             this.setState({
                 date: typeof nextProps.date === 'string'
                     ? this.parseStringDate(nextProps.date)
-                    : null,
+                    : nextProps.date,
             });
         }
     }

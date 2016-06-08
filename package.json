@@ -1,6 +1,6 @@
 {
   "name": "react-native-osd-datetimepicker",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "A Datetimepicker for Android and iOs for react-native",
   "main": "DateTimePicker.js",
   "dependencies": {

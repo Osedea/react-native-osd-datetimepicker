@@ -24,13 +24,12 @@ const styles = StyleSheet.create({
         ),
         borderColor: '#DDDDDD',
         justifyContent: 'center',
-        padding: 5,
     },
     dateTextContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: 5,
+        padding: 10,
     },
     modalBackground: {
         flex: 1,

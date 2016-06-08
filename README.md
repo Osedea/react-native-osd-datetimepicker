@@ -7,17 +7,17 @@ For react-native v0.26+
 
 ### Closed
 
-<img alt='Before' src='example-empty.png' height='200px' /> <img alt='After' src='example-set.png' height='200px' />
+<img alt='Before' src='images/example-empty.png' height='200px' /> <img alt='After' src='images/example-set.png' height='200px' />
 
 ### Open
 
 Android
 
-<img alt='Android-date' src='example-android-date.png' height='200px' /> <img alt='Android-hours' src='example-android-time-hours.png' height='200px' /> <img alt='Android-minutes' src='example-android-time-minutes.png' height='200px' />
+<img alt='Android-date' src='images/example-android-date.png' height='200px' /> <img alt='Android-hours' src='images/example-android-time-hours.png' height='200px' /> <img alt='Android-minutes' src='images/example-android-time-minutes.png' height='200px' />
 
 iOs
 
-<img alt='IOS-date' src='example-ios-date.png' height='200px' /> <img alt='IOS-hours' src='example-ios-time.png' height='200px' /> <img alt='IOS-minutes' src='example-ios-datetime.png' height='200px' />
+<img alt='IOS-date' src='images/example-ios-date.png' height='200px' /> <img alt='IOS-hours' src='images/example-ios-time.png' height='200px' /> <img alt='IOS-minutes' src='images/example-ios-datetime.png' height='200px' />
 
 # Output
 

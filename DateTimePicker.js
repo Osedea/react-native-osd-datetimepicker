@@ -66,6 +66,10 @@ export default class DateTimePicker extends Component {
             React.PropTypes.date,
             React.PropTypes.string,
         ]),
+        iosDoneButtonText: React.PropTypes.string,
+        iosDoneButtonStyle: Button.propTypes.containerStyle,
+        iosClosePickerButtonTextContainerStyle: Button.propTypes.textContainerStyle,
+        iosClosePickerButtonTextStyle: Button.propTypes.textStyle,
         label: React.PropTypes.string,
         mode: React.PropTypes.oneOf([
             'datetime',
@@ -77,14 +81,14 @@ export default class DateTimePicker extends Component {
     };
 
     static defaultProps = {
-        label: 'Date',
         mode: 'datetime',
+        iosDoneButtonText: 'Done',
     };
 
     constructor(props) {
         super(props);
-
         let currentDate = null;
+
         if (props.date) {
             currentDate = typeof props.date === 'string'
                 ? this.parseStringDate(props.date)
@@ -93,6 +97,7 @@ export default class DateTimePicker extends Component {
 
         this.state = {
             date: currentDate,
+            label: props.label || props.mode.toUpperCase(),
             mode: props.mode,
             pickerVisible: false,
         };
@@ -125,7 +130,23 @@ export default class DateTimePicker extends Component {
     }
 
     parseStringDate = (stringDate) => {
-        const date = new Date(stringDate);
+        let date;
+        const matchTime = stringDate.match(/^ *([0-9]+):([0-9]+):00 ([AP]M)?/);
+
+        if (matchTime) {
+            date = new Date();
+            if (matchTime[3] === 'PM' && matchTime[1] !== '12') {
+                date.setHours(Number(matchTime[1]) + 12);
+            } else if (matchTime[3] === 'AM' && matchTime[1] === '12') {
+                date.setHours(0);
+            } else {
+                date.setHours(matchTime[1]);
+            }
+            date.setMinutes(matchTime[2]);
+            date.setSeconds(0);
+        } else {
+            date = new Date(stringDate);
+        }
 
         const parsedDate = new Date(
             date.getFullYear(),
@@ -152,8 +173,13 @@ export default class DateTimePicker extends Component {
                 if (datePickerAction !== DatePickerAndroid.dismissedAction) {
                     if (this.props.mode === 'datetime') {
                         TimePickerAndroid.open({
-                            date: this.state.date,
-                            is24Hour: true,
+                            ...(this.state.date
+                                ? {
+                                    hour: this.state.date.getHours(),
+                                    minute: this.state.date.getMinutes(),
+                                }
+                                : {}
+                            ),
                         })
                         .then(({ timePickerAction, hour, minute }) => {
                             if (timePickerAction !== TimePickerAndroid.dismissedAction) {
@@ -179,8 +205,13 @@ export default class DateTimePicker extends Component {
             .catch(({ code, message }) => console.info(`Cannot open date picker ${code}`, message));
         } else if (this.props.mode === 'time') {
             TimePickerAndroid.open({
-                date: this.state.date,
-                is24Hour: true,
+                ...(this.state.date
+                    ? {
+                        hour: this.state.date.getHours(),
+                        minute: this.state.date.getMinutes(),
+                    }
+                    : {}
+                ),
             })
             .then(({ action, hour, minute }) => {
                 if (action !== TimePickerAndroid.dismissedAction) {
@@ -188,6 +219,7 @@ export default class DateTimePicker extends Component {
 
                     date.setHours(hour);
                     date.setMinutes(minute);
+                    date.setSeconds(0);
 
                     this.handleDateChange(date);
                 }
@@ -233,9 +265,17 @@ export default class DateTimePicker extends Component {
                                 onDateChange={this.handleDateChange}
                             />
                             <Button
-                                containerStyle={styles.iosClosePickerButton}
-                                text={'Done'}
-                                underlayColor={'#00AA00'}
+                                containerStyle={[
+                                    styles.iosClosePickerButton,
+                                    this.props.iosDoneButtonStyle,
+                                ]}
+                                textContainerStyle={[
+                                    this.props.iosClosePickerButtontextContainerStyle,
+                                ]}
+                                textStyle={[
+                                    this.props.iosClosePickerButtontextStyle,
+                                ]}
+                                text={this.props.iosDoneButtonText}
                                 onPress={this.handleClose}
                             />
                         </View>
@@ -255,7 +295,7 @@ export default class DateTimePicker extends Component {
                     }
                     underlayColor={'rgba(0, 0, 0, 0.5)'}
                 >
-                    <Text style={styles.label}>{this.props.label}</Text>
+                    <Text style={styles.label}>{this.state.label}</Text>
                     <Text style={styles.value}>
                         {this.getDisplayValue(this.state.date)}
                     </Text>

@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
                 borderWidth: 1,
                 borderRadius: 4, // Tried to fit with the apple doc https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/MobileHIG/Controls.html#//apple_ref/doc/uid/TP40006556-CH15-SW1
             }
-            : {},
+            : {}
         ),
         borderColor: '#DDDDDD',
         justifyContent: 'center',

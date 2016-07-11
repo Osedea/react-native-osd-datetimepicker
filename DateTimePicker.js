@@ -48,7 +48,6 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width,
         backgroundColor: '#FFFFFF',
         justifyContent: 'flex-end',
-        alignItems: 'center',
     },
     label: {
         flex: 1,

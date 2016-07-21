@@ -32,6 +32,8 @@ For `datetime` : Local datetime string (parsable in `new Date()`)
 Property Name | Type | Remark
 --- | --- | ---
 date | React.PropTypes.string
+minDate | React.PropTypes.string
+maxDate | React.PropTypes.string
 mode | React.PropTypes.oneOf([ 'datetime', 'date', 'time' ]) |
 onChange | React.PropTypes.func.isRequired
 iosDoneButtonText | React.PropTypes.string

@@ -85,7 +85,9 @@ export default class DateTimePicker extends Component {
 
     constructor(props) {
         super(props);
-        let currentDate = null;
+        let currentDate = null,
+            minDate     = null,
+            maxDate     = null;
 
         if (props.date) {
             currentDate = typeof props.date === 'string'
@@ -93,8 +95,22 @@ export default class DateTimePicker extends Component {
                 : props.date;
         }
 
+        if (props.minDate) {
+            minDate = typeof props.minDate === 'string'
+                ? this.parseStringDate(props.minDate)
+                : props.minDate;
+        }
+
+        if (props.maxDate) {
+            maxDate = typeof props.maxDate === 'string'
+                ? this.parseStringDate(props.maxDate)
+                : props.maxDate;
+        }
+
         this.state = {
             date: currentDate,
+            minDate: minDate,
+            maxDate: maxDate,
             label: props.label || props.mode.toUpperCase(),
             mode: props.mode,
             pickerVisible: false,
@@ -166,6 +182,8 @@ export default class DateTimePicker extends Component {
         if (this.props.mode === 'date' || this.props.mode === 'datetime') {
             DatePickerAndroid.open({
                 date: this.state.date || new Date(),
+                minDate: this.state.minDate,
+                maxDate: this.state.maxDate
             })
             .then(({ datePickerAction, year, month, day }) => {
                 if (datePickerAction !== DatePickerAndroid.dismissedAction) {
@@ -259,6 +277,8 @@ export default class DateTimePicker extends Component {
                         <View style={styles.iosPickerContainer}>
                             <DatePickerIOS
                                 date={this.state.date || new Date()}
+                                minimumDate={this.state.minDate}
+                                maximumDate={this.state.maxDate }
                                 mode={this.state.mode}
                                 onDateChange={this.handleDateChange}
                             />

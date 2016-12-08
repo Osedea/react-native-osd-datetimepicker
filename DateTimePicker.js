@@ -143,6 +143,22 @@ export default class DateTimePicker extends Component {
         }
     }
 
+    getReturnValue = (date) => {
+        if (!date) {
+            return null;
+        }
+
+        if (this.props.mode === 'time') {
+            date.setSeconds(0);
+
+            return date.toTimeString();
+        } else if (this.props.mode === 'date') {
+            return date.toDateString();
+        } else {
+            return date.toString();
+        }
+    }
+
     parseStringDate = (stringDate) => {
         let date;
         const matchTime = stringDate.match(/^ *([0-9]+):([0-9]+):00 ([AP]M)?/);
@@ -175,7 +191,7 @@ export default class DateTimePicker extends Component {
 
     handleDateChange = (date) => {
         this.setState({ date });
-        this.props.onChange(this.getDisplayValue(date));
+        this.props.onChange(this.getReturnValue(date));
     };
 
     handleAndroidPickerDisplay = () => {

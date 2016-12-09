@@ -196,10 +196,18 @@ export default class DateTimePicker extends Component {
 
     handleAndroidPickerDisplay = () => {
         if (this.props.mode === 'date' || this.props.mode === 'datetime') {
+            let minMax = {};
+
+            if (this.state.minDate) {
+                minMax.minDate = this.state.minDate;
+            }
+            if (this.state.maxDate) {
+                minMax.maxDate = this.state.maxDate;
+            }
+
             DatePickerAndroid.open({
                 date: this.state.date || new Date(),
-                minDate: this.state.minDate,
-                maxDate: this.state.maxDate
+                ...minMax,
             })
             .then(({ datePickerAction, year, month, day }) => {
                 if (datePickerAction !== DatePickerAndroid.dismissedAction) {

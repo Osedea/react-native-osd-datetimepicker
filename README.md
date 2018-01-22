@@ -27,6 +27,22 @@ For `date` : Local date string (parsable in `new Date()`)
 
 For `datetime` : Local datetime string (parsable in `new Date()`)
 
+# Usage example
+
+```jsx
+<DateTimePicker
+    containerStyle={styles.container}
+    iosDoneButtonText={styles.iosDoneButtonText}
+    iosDoneButtonStyle={styles.iosDoneButton}
+    iosClosePickerButtonTextContainerStyle={styles.iosClosePickerButtonText}
+    iosClosePickerButtonTextStyle={styles.iosClosePickerButton}
+    label={'Choose a date'}
+    date={this.state.value} // To have a controlled component behaviour
+    mode={'date'}
+    onChange={this.handleDateChange}
+/>
+```
+
 # Properties
 
 Property Name | Type | Remark

@@ -1,0 +1,9 @@
+extends:
+  - osedea/react-native
+
+globals:
+  __DEV__: true
+
+
+rules:
+  react/jsx-curly-brace-presence: 0

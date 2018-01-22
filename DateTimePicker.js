@@ -12,9 +12,15 @@ import {
 } from 'react-native';
 import Button from 'react-native-osd-simple-button';
 
+const colors = {
+    background: '#FFFFFF',
+    border: '#DDDDDD',
+    closeBG: '#00CC00',
+    modalBG: 'rgba(0, 0, 0, 0.4)',
+};
 const styles = StyleSheet.create({
     dateDisplay: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: colors.background,
         ...(Platform.OS === 'ios'
             ? {
                 borderWidth: 1,
@@ -22,7 +28,7 @@ const styles = StyleSheet.create({
             }
             : {}
         ),
-        borderColor: '#DDDDDD',
+        borderColor: colors.border,
         justifyContent: 'center',
     },
     dateTextContainer: {
@@ -33,10 +39,10 @@ const styles = StyleSheet.create({
     },
     modalBackground: {
         flex: 1,
-        backgroundColor: 'rgba(0, 0, 0, 0.4)',
+        backgroundColor: colors.modalBG,
     },
     iosClosePickerButton: {
-        backgroundColor: '#00CC00',
+        backgroundColor: colors.closeBG,
         width: Dimensions.get('window').width,
         borderWidth: 0,
         borderRadius: 0,
@@ -46,7 +52,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 0,
         width: Dimensions.get('window').width,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: colors.background,
         justifyContent: 'flex-end',
     },
     label: {
@@ -85,9 +91,9 @@ export default class DateTimePicker extends Component {
 
     constructor(props) {
         super(props);
-        let currentDate = null,
-            minDate     = null,
-            maxDate     = null;
+        let currentDate = null;
+        let minDate = null;
+        let maxDate = null;
 
         if (props.date) {
             currentDate = typeof props.date === 'string'
@@ -109,8 +115,8 @@ export default class DateTimePicker extends Component {
 
         this.state = {
             date: currentDate,
-            minDate: minDate,
-            maxDate: maxDate,
+            minDate,
+            maxDate,
             label: props.label || props.mode.toUpperCase(),
             mode: props.mode,
             pickerVisible: false,
@@ -209,40 +215,40 @@ export default class DateTimePicker extends Component {
                 date: this.state.date || new Date(),
                 ...minMax,
             })
-            .then(({ datePickerAction, year, month, day }) => {
-                if (datePickerAction !== DatePickerAndroid.dismissedAction) {
-                    if (this.props.mode === 'datetime') {
-                        TimePickerAndroid.open({
-                            ...(this.state.date
-                                ? {
-                                    hour: this.state.date.getHours(),
-                                    minute: this.state.date.getMinutes(),
-                                }
-                                : {}
-                            ),
-                        })
-                        .then(({ timePickerAction, hour, minute }) => {
-                            if (timePickerAction !== TimePickerAndroid.dismissedAction) {
-                                const dateWithHoursAndMinutes = new Date(
-                                    year,
-                                    month,
-                                    day,
-                                    hour,
-                                    minute
-                                );
+                .then(({ datePickerAction, year, month, day }) => {
+                    if (datePickerAction !== DatePickerAndroid.dismissedAction) {
+                        if (this.props.mode === 'datetime') {
+                            TimePickerAndroid.open({
+                                ...(this.state.date
+                                    ? {
+                                        hour: this.state.date.getHours(),
+                                        minute: this.state.date.getMinutes(),
+                                    }
+                                    : {}
+                                ),
+                            })
+                                .then(({ timePickerAction, hour, minute }) => {
+                                    if (timePickerAction !== TimePickerAndroid.dismissedAction) {
+                                        const dateWithHoursAndMinutes = new Date(
+                                            year,
+                                            month,
+                                            day,
+                                            hour,
+                                            minute
+                                        );
 
-                                this.handleDateChange(dateWithHoursAndMinutes);
-                            }
-                        })
-                        .catch(({ code, message }) => console.info(`Cannot open date picker ${code}`, message));
-                    } else {
-                        const newDate = new Date(year, month, day);
+                                        this.handleDateChange(dateWithHoursAndMinutes);
+                                    }
+                                })
+                                .catch(({ code, message }) => console.info(`Cannot open date picker ${code}`, message));
+                        } else {
+                            const newDate = new Date(year, month, day);
 
-                        this.handleDateChange(newDate);
+                            this.handleDateChange(newDate);
+                        }
                     }
-                }
-            })
-            .catch(({ code, message }) => console.info(`Cannot open date picker ${code}`, message));
+                })
+                .catch(({ code, message }) => console.info(`Cannot open date picker ${code}`, message));
         } else if (this.props.mode === 'time') {
             TimePickerAndroid.open({
                 ...(this.state.date
@@ -253,18 +259,18 @@ export default class DateTimePicker extends Component {
                     : {}
                 ),
             })
-            .then(({ action, hour, minute }) => {
-                if (action !== TimePickerAndroid.dismissedAction) {
-                    const date = new Date();
+                .then(({ action, hour, minute }) => {
+                    if (action !== TimePickerAndroid.dismissedAction) {
+                        const date = new Date();
 
-                    date.setHours(hour);
-                    date.setMinutes(minute);
-                    date.setSeconds(0);
+                        date.setHours(hour);
+                        date.setMinutes(minute);
+                        date.setSeconds(0);
 
-                    this.handleDateChange(date);
-                }
-            })
-            .catch(({ code, message }) => console.info(`Cannot open date picker ${code}`, message));
+                        this.handleDateChange(date);
+                    }
+                })
+                .catch(({ code, message }) => console.info(`Cannot open date picker ${code}`, message));
         }
     };
 
